@@ -9,6 +9,8 @@ import {
   IconButton,
   TextField,
   Divider,
+  Rating,
+  Chip,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -32,7 +34,13 @@ const ProductDetailModal = ({ open, onClose, product, onAddToCart }) => {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <Box display="flex" flexDirection={{ xs: 'column', md: 'row' }} p={2} gap={3}>
+      <Box
+        display="flex"
+        flexDirection={{ xs: 'column', md: 'row' }}
+        p={2}
+        gap={3}
+        alignItems="center"
+      >
         {/* Product Image Section */}
         <Box
           flex={1}
@@ -46,6 +54,10 @@ const ProductDetailModal = ({ open, onClose, product, onAddToCart }) => {
           <img
             src={product.image}
             alt={product.title}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://via.placeholder.com/150';
+            }}
             style={{
               maxWidth: '100%',
               maxHeight: 300,
@@ -55,29 +67,56 @@ const ProductDetailModal = ({ open, onClose, product, onAddToCart }) => {
           />
         </Box>
 
-        {/* Product Info and Actions */}
+        {/* Product Info Section */}
         <Box flex={2} display="flex" flexDirection="column" justifyContent="space-between">
-          <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem' }}>
+          <DialogTitle sx={{ fontWeight: 'bold', fontSize: '1.5rem', pb: 0 }}>
             {product.title}
           </DialogTitle>
 
-          <DialogContent sx={{ px: 0 }}>
+          <DialogContent sx={{ px: 0, pt: 1 }}>
+            {/* Category */}
+            <Chip
+              label={product.category?.toUpperCase()}
+              size="small"
+              sx={{
+                mb: 2,
+                backgroundColor: '#e0f7fa',
+                color: '#00bcd4',
+                fontWeight: 'bold',
+              }}
+            />
+
+            {/* Description */}
             <Typography variant="body2" color="text.secondary" gutterBottom>
               {product.description}
             </Typography>
 
             <Divider sx={{ my: 2 }} />
 
-            <Typography variant="subtitle2" gutterBottom>
-              Category: <strong>{product.category}</strong>
-            </Typography>
+            {/* Rating */}
+            <Box display="flex" alignItems="center" gap={1} mb={1}>
+              <Rating
+                name="read-only"
+                value={product.rating?.rate || 0}
+                precision={0.5}
+                readOnly
+                size="small"
+              />
+              <Typography variant="body2" color="text.secondary">
+                ({product.rating?.count || 0})
+              </Typography>
+            </Box>
 
-            <Typography variant="subtitle1" fontWeight="bold" gutterBottom>
-              Rating: {product.rating?.rate} ⭐
+            {/* Price */}
+            <Typography
+              variant="h6"
+              sx={{ color: 'error.main', fontWeight: 'bold', mb: 2 }}
+            >
+              ${product.price}
             </Typography>
 
             {/* Quantity Controls */}
-            <Box display="flex" alignItems="center" gap={2} mt={3}>
+            <Box display="flex" alignItems="center" gap={2}>
               <Typography variant="body1">Quantity:</Typography>
               <Box display="flex" alignItems="center" border="1px solid #ccc" borderRadius={1}>
                 <IconButton size="small" onClick={() => handleQuantityChange(quantity - 1)}>
@@ -100,19 +139,22 @@ const ProductDetailModal = ({ open, onClose, product, onAddToCart }) => {
 
             {/* Add to Cart Button */}
             <Button
-              variant="contained"
-              color="primary"
               fullWidth
+              variant="contained"
+              onClick={handleAddToCart}
               sx={{
                 mt: 3,
                 py: 1.5,
                 borderRadius: 2,
                 textTransform: 'none',
                 fontWeight: 'bold',
+                backgroundColor: '#00bcd4',
+                '&:hover': {
+                  backgroundColor: '#00acc1',
+                },
               }}
-              onClick={handleAddToCart}
             >
-              Add to Cart
+              🛒 Add to Cart
             </Button>
           </DialogContent>
         </Box>

@@ -14,13 +14,16 @@ import {
 import { useCart } from '../context/CartContext';
 
 const ProductDetail = ({ product }) => {
-  const { addToCart } = useCart();
+  const { addToCart, cartItems } = useCart();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   const handleAddToCart = () => {
-    const added = addToCart(product);
-    if (added) {
+    const alreadyInCart = cartItems.some(item => item.id === product.id);
+    if (alreadyInCart) {
+      alert('Product is already in the cart.');
+    } else {
+      addToCart(product);
       alert('Product added to cart successfully!');
     }
   };

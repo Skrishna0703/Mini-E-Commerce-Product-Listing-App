@@ -6,7 +6,7 @@ const Footer = () => {
     <Box
       component="footer"
       sx={{
-        bgcolor: 'primary.main',
+        bgcolor: '#00acc1',
         color: 'white',
         py: 4,
         mt: 8,
@@ -17,7 +17,7 @@ const Footer = () => {
 
         <Box mt={4} textAlign="center">
           <Typography variant="body2">
-            © {new Date().getFullYear()} Shrikrishnasutar.dev || All rights reserved.
+            © {new Date().getFullYear()} Shrikrishnasutar.dev | All rights reserved.
           </Typography>
         </Box>
       </Container>

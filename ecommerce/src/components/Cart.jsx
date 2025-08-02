@@ -34,6 +34,7 @@ const Cart = () => {
         boxShadow: { xs: 'none', sm: 3 },
         p: 2,
         overflow: 'hidden',
+        color: theme.palette.text.primary, // <-- default text color
       }}
     >
       {/* Cart Header */}
@@ -42,8 +43,9 @@ const Cart = () => {
         fontWeight={600}
         gutterBottom
         textAlign="center"
+        color="text.primary"
       >
-         Your Cart
+        Your Cart
       </Typography>
       <Divider />
 
@@ -60,8 +62,8 @@ const Cart = () => {
         }}
       >
         {cartItems.length === 0 ? (
-          <Typography variant="body1" textAlign="center" mt={4}>
-            Your cart is empty 
+          <Typography variant="body1" textAlign="center" mt={4} color="text.secondary">
+            Your cart is empty
           </Typography>
         ) : (
           cartItems.map((item) => (
@@ -75,7 +77,7 @@ const Cart = () => {
                 p: 2,
                 mb: 2,
                 borderRadius: 2,
-                bgcolor: '#f9f9f9',
+                bgcolor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#f9f9f9',
                 boxShadow: 1,
               }}
             >
@@ -87,11 +89,11 @@ const Cart = () => {
               />
 
               <Box sx={{ flex: 1, ml: { sm: 2 }, textAlign: { xs: 'center', sm: 'left' } }}>
-                <Typography fontSize={14} fontWeight={600} Wrap>
+                <Typography fontSize={14} fontWeight={600} color="text.primary">
                   {item.title}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                 $ {item.price.toFixed(2)}
+                  ${item.price.toFixed(2)}
                 </Typography>
 
                 {/* Quantity Controls */}
@@ -135,15 +137,24 @@ const Cart = () => {
           fontWeight={600}
           textAlign="right"
           fontSize={{ xs: 14, sm: 16 }}
+          color="text.primary"
         >
           Total: ${getTotalPrice()}
         </Typography>
         <Button
           fullWidth
           variant="contained"
-          color="primary"
-          sx={{ mt: 1, py: 1, borderRadius: 2 }}
           disabled={cartItems.length === 0}
+          sx={{
+            mt: 1,
+            py: 1,
+            borderRadius: 2,
+            bgcolor: '#00bcd4',
+            color: '#fff',
+            '&:hover': {
+              bgcolor: '#00acc1',
+            },
+          }}
         >
           Proceed to Checkout
         </Button>
